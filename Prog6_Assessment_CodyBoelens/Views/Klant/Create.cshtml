@@ -1,0 +1,57 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel.KlantViewModel
+
+@{
+    ViewData["Title"] = "Create Klant";
+}
+
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (ViewData.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        <strong>Error! </strong> Please fix the following issues:
+        <ul>
+            @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@modelError.ErrorMessage</li>
+            }
+        </ul>
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+    </div>
+}
+<form asp-action="Create" method="post" autocomplete="off">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Naam</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger" ></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label">Telefoonnummer</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adres" class="form-label">Adres</label>
+        <input asp-for="Adres" class="form-control" />
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="KlantkaartId" class="form-label">Klantkaart</label>
+        <select asp-for="KlantkaartId" class="form-control" id="KlantkaartId">
+            <option value="">Geen Klantkaart</option>
+            @foreach (var klantkaart in Model.allRanks)
+            {
+                <option value="@klantkaart.Id">@klantkaart.Rank</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

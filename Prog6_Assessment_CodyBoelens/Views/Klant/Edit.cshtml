@@ -1,0 +1,44 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel.KlantViewModel
+
+@{
+    ViewData["Title"] = "Create Klant";
+}
+
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+<form asp-action="Edit" method="post" autocomplete="off">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Naam</label>
+        <input asp-for="Name" class="form-control" readonly/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" type="email" readonly/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label">Telefoonnummer</label>
+        <input asp-for="PhoneNumber" class="form-control" readonly/>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adres" class="form-label">Adres</label>
+        <input asp-for="Adres" class="form-control" readonly/>
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="KlantkaartId" class="form-label">Klantkaart</label>
+        <select asp-for="KlantkaartId" class="form-control" id="KlantkaartId">
+            <option value="">Geen Klantkaart</option>
+            @foreach (var klantkaart in Model.allRanks)
+            {
+                <option name="KlantkaartId" value="@klantkaart.Id">@klantkaart.Rank</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

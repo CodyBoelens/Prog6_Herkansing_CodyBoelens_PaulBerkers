@@ -1,0 +1,46 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel.BeestjeViewModel
+
+@{
+    ViewData["Title"] = "Create Beestje";
+}
+
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error! </strong>@TempData["errorMessage"]
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+    </div>
+}
+<form asp-action="Create" method="post" autocomplete="off">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Naam</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="TypeId" class="form-label">Type</label>
+        <select asp-for="TypeId" class="form-control" id="TypeId">
+            <option value="">Select Type</option>
+            @foreach (var type in Model.allTypes)
+            {
+                <option value="@type.Id">@type.TypeName</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Prijs</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Picture" class="form-label">Plaatje</label>
+        <input asp-for="Picture" class="form-control" />
+        <span asp-validation-for="Picture" class="text-danger" />
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
