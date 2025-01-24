@@ -8,11 +8,9 @@ namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel
         [Required]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Naam is verplicht")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Naam moet tussen de 2 en 50 tekens zijn")]
+        [Required]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Type is verplicht")]
         public string? Type { get; set; }
 
         [Required]
@@ -20,7 +18,8 @@ namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel
         public double Price { get; set; }
         [Required]
         public string Picture { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Type is verplicht")]
         public int TypeId { get; set; }
         public List<Types>? allTypes { get; set; }
         public List<string>? allImageNames { get; set; }

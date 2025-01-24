@@ -37,7 +37,7 @@
     </div>
     <div class="mb-3">
         <label asp-for="Picture" class="form-label">Plaatje</label>
-        <select class="form-control" asp-for="Picture" id="Picture">
+        <select asp-for="Picture" class="form-control" id="Picture">
             <option value="">Selecteer Plaatje</option>
             @foreach (var imageName in Model.allImageNames)
             {
