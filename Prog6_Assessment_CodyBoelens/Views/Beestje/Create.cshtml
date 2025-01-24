@@ -18,22 +18,23 @@
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Naam</label>
         <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label asp-for="TypeId" class="form-label">Type</label>
-        <select asp-for="TypeId" class="form-control" id="TypeId">
-            <option value="">Selecteer Type</option>
+        <select asp-for="TypeId" class="form-control">
+            <option value="-1">Select Type</option>
             @foreach (var type in Model.allTypes)
             {
                 <option value="@type.Id">@type.TypeName</option>
             }
         </select>
+        <span asp-validation-for="TypeId" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label asp-for="Price" class="form-label">Prijs</label>
         <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger" />
+        <span asp-validation-for="Price" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label asp-for="Picture" class="form-label">Plaatje</label>
@@ -44,9 +45,10 @@
                 <option value="@imageName">@imageName</option>
             }
         </select>
-        <span asp-validation-for="Picture" class="text-danger" />
+        <span asp-validation-for="Picture" class="text-danger"></span>
     </div>
     <div class="d-grid">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+
