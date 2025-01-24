@@ -28,7 +28,8 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         {
             var beestjeViewModel = new BeestjeViewModel
             {
-                allTypes = await _beestjeService.GetAllTypesAsync()
+                allTypes = await _beestjeService.GetAllTypesAsync(),
+                allImageNames = await _beestjeService.GetAllImageNamesAsync()
             };
 
             return View(beestjeViewModel);
@@ -40,6 +41,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             if (!ModelState.IsValid)
             {
                 beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
                 TempData["errorMessage"] = "Vul de juiste gegevens in.";
                 return View(beestjeViewModel);
             }
@@ -53,6 +55,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             {
                 TempData["errorMessage"] = ex.Message;
                 beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
                 return View(beestjeViewModel);
             }
         }
@@ -67,6 +70,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             }
 
             beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+            beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
             return View(beestjeViewModel);
         }
 
@@ -76,6 +80,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             if (!ModelState.IsValid)
             {
                 beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
                 TempData["errorMessage"] = "Vul de juiste gegevens in.";
                 return View(beestjeViewModel);
             }
@@ -89,6 +94,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             {
                 TempData["errorMessage"] = ex.Message;
                 beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
                 return View(beestjeViewModel);
             }
         }
