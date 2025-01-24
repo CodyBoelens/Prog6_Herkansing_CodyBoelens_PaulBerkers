@@ -2,20 +2,14 @@
 using Prog6_Assessment_CodyBoelens.Controllers;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Prog6_Assessment_CodyBoelens.Services
 {
-    public interface IKlantService
-    {
-        List<KlantViewModel> GetKlantViewModels();
-        List<Klantkaart> GetAllKlantkaarten();
-        Task<string> CreateKlantAsync(KlantViewModel klantViewModel);
-        KlantViewModel GetKlantById(int id);
-        Task<bool> UpdateKlantAsync(KlantViewModel viewModel);
-    }
+    
 
     public class KlantService : IKlantService
     {
@@ -105,6 +99,31 @@ namespace Prog6_Assessment_CodyBoelens.Services
             {
                 Id = id,
                 Name = klant.Name,
+                Adres = klant.Adres,  
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                KlantkaartId = klant.KlantkaartId,
+                allRanks = klantkaarten
+            };
+        }
+
+        public KlantViewModel GetKlantByApplicationUserId(string applicationUserId)
+        {
+            // Find the klant using the ApplicationUserId
+            var klant = _context.Klanten.SingleOrDefault(b => b.ApplicationUserId == applicationUserId);
+            var klantkaarten = _context.Klantkaarten.ToList();
+
+            // If no klant is found, return null
+            if (klant == null) return null;
+
+            // Retrieve the associated user using the UserManager
+            var user = _userManager.FindByIdAsync(applicationUserId).Result;
+
+            // Return the populated KlantViewModel
+            return new KlantViewModel
+            {
+                Id = klant.Id,
+                Name = klant.Name,
                 Adres = klant.Adres,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
@@ -112,6 +131,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                 allRanks = klantkaarten
             };
         }
+
 
         public async Task<bool> UpdateKlantAsync(KlantViewModel viewModel)
         {

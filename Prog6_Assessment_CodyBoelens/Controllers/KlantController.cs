@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Data.Migrations;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
 using System.Security.Cryptography;

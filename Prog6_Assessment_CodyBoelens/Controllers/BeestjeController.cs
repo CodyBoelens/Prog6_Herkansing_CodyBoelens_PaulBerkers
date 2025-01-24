@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using System.Threading.Tasks;
