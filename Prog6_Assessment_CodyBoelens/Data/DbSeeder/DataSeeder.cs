@@ -37,7 +37,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {
                         Name = "Aap",
                         Price = 10,
-                        Picture = "aap.jpg",
+                        Picture = "aap.jpeg",
                         TypeId = 1,
                     },
                     new Beestje()
@@ -51,7 +51,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {     
                         Name = "Zebra",
                         Price = 10,
-                        Picture = "zebra.jpg",
+                        Picture = "zebra.jpeg",
                         TypeId = 1,
                     },
                     new Beestje()
@@ -65,7 +65,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {    
                         Name = "Ezel",
                         Price = 10,
-                        Picture = "ezel.jpg",
+                        Picture = "ezel.jpeg",
                         TypeId = 2,
                     },
                     new Beestje()
@@ -79,21 +79,21 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {
                         Name = "Pinguin",
                         Price = 10,
-                        Picture = "pinguin.jpg",
+                        Picture = "pinguin.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Ijsbeer",
                         Price = 10,
-                        Picture = "ijsbeer.jpg",
+                        Picture = "ijsbeer.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Zeehond",
                         Price = 10,
-                        Picture = "zeehond.jpg",
+                        Picture = "zeehond.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
@@ -107,7 +107,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {
                         Name = "Slang",
                         Price = 10,
-                        Picture = "slang.jpg",
+                        Picture = "slang.jpeg",
                         TypeId = 4,
                     },
                     new Beestje()
@@ -121,7 +121,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {
                         Name = "Unicorn",
                         Price = 10,
-                        Picture = "unicorn.jpg",
+                        Picture = "unicorn.jpeg",
                         TypeId = 5,
                     }
                 };

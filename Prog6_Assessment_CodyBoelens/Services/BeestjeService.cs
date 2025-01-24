@@ -15,6 +15,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
         Task<bool> UpdateBeestjeAsync(BeestjeViewModel viewModel);
         Task<bool> DeleteBeestjeAsync(int id);
         Task<List<Types>> GetAllTypesAsync();
+        Task<List<String>> GetAllImageNamesAsync();
     }
 
     public class BeestjeService : IBeestjeService
@@ -137,6 +138,23 @@ namespace Prog6_Assessment_CodyBoelens.Services
         public async Task<List<Types>> GetAllTypesAsync()
         {
             return await _context.Types.ToListAsync();
+        }
+
+        public async Task<List<String>> GetAllImageNamesAsync()
+        {
+            string imagesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/beestjes");
+            List<string> imageNameList = new List<string>();
+
+            if (Directory.Exists(imagesDirectory))
+            {
+                var imageNames = Directory.GetFiles(imagesDirectory)
+                                           .Select(Path.GetFileName)
+                                           .ToList();
+
+                imageNameList.AddRange(imageNames);
+            }
+
+            return imageNameList;
         }
     }
 }
