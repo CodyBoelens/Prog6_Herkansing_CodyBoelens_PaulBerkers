@@ -6,5 +6,6 @@ namespace Prog6_Assessment_CodyBoelens.Interfaces
     public interface IBoekingService
     {
         Task AddBoekingAsync(BoekingViewModel boekingViewModel);
+        Task<List<string>> BoekingValidation(Step03ViewModel viewModel);
     }
 }

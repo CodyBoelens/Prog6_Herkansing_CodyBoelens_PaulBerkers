@@ -33,7 +33,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var klantViewModel = new KlantViewModel
+            var klantViewModel = new KlantViewModels
             {
                 allRanks = _klantService.GetAllKlantkaarten()
             };
@@ -42,7 +42,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(KlantViewModel klantViewModel)
+        public async Task<IActionResult> Create(KlantViewModels klantViewModel)
         {
             if (!ModelState.IsValid) return View(klantViewModel);
 
@@ -70,7 +70,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(KlantViewModel viewModel)
+        public async Task<IActionResult> Edit(KlantViewModels viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
 

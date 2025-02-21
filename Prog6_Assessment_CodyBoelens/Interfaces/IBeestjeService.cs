@@ -5,12 +5,13 @@ namespace Prog6_Assessment_CodyBoelens.Interfaces
 {
     public interface IBeestjeService
     {
-        Task<List<BeestjeViewModel>> GetAllBeestjesAsync();
-        Task<BeestjeViewModel> GetBeestjeByIdAsync(int id);
-        Task<bool> CreateBeestjeAsync(BeestjeViewModel viewModel);
-        Task<bool> UpdateBeestjeAsync(BeestjeViewModel viewModel);
+        Task<List<BeestjeViewModels>> GetAllBeestjesAsync();
+        Task<BeestjeViewModels> GetBeestjeByIdAsync(int id);
+        Task<bool> CreateBeestjeAsync(BeestjeViewModels viewModel);
+        Task<bool> UpdateBeestjeAsync(BeestjeViewModels viewModel);
         Task<bool> DeleteBeestjeAsync(int id);
         Task<List<Types>> GetAllTypesAsync();
         Task<List<String>> GetAllImageNamesAsync();
+        Task<List<BeestjeViewModels>> GetBeestjesByIdsAsync(List<int> ids);
     }
 }

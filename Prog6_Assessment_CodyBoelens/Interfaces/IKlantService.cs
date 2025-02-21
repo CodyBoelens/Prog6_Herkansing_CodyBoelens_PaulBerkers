@@ -5,11 +5,11 @@ namespace Prog6_Assessment_CodyBoelens.Interfaces
 {
     public interface IKlantService
     {
-        List<KlantViewModel> GetKlantViewModels();
+        List<KlantViewModels> GetKlantViewModels();
         List<Klantkaart> GetAllKlantkaarten();
-        Task<string> CreateKlantAsync(KlantViewModel klantViewModel);
-        KlantViewModel GetKlantById(int id);
-        KlantViewModel GetKlantByApplicationUserId(string applicationUserId);
-        Task<bool> UpdateKlantAsync(KlantViewModel viewModel);
+        Task<string> CreateKlantAsync(KlantViewModels klantViewModel);
+        KlantViewModels GetKlantById(int id);
+        KlantViewModels GetKlantByApplicationUserId(string applicationUserId);
+        Task<bool> UpdateKlantAsync(KlantViewModels viewModel);
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Interfaces;
+using Prog6_Assessment_CodyBoelens.Services;
+using Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
 using System.Security.Claims;
 
@@ -11,11 +13,13 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
     {
         private readonly IBoekingService _boekingService;
         private readonly IKlantService _klantService;
+        private readonly IBeestjeService _beestjeService;
 
-        public BoekingController(IBoekingService boekingService, IKlantService klantService)
+        public BoekingController(IBoekingService boekingService, IKlantService klantService, IBeestjeService beestjeService)
         {
             _boekingService = boekingService;
             _klantService = klantService;
+            _beestjeService = beestjeService;
         }
 
         public IActionResult Index()
@@ -65,7 +69,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Step02(KlantViewModel klant, DateTime eventDate)
+        public async Task<IActionResult> Step02(KlantViewModels klant, DateTime eventDate)
         {
             if (eventDate == default)
             {
@@ -73,17 +77,53 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
                 return RedirectToAction("Step01");
             }
 
-            ViewBag.EventDate = eventDate;
-
-            return RedirectToAction("Step03",  klant);
+            return RedirectToAction("Step03", new { klant.Name, klant.Email, klant.PhoneNumber, klant.Adres, klant.KlantkaartId, eventDate });
         }
+
 
         [HttpGet]
-        public IActionResult Step03(KlantViewModel klant)
+        public async Task<IActionResult> Step03(KlantViewModels klant, DateTime eventDate)
         {
-            // Process the klant model for Step03
-            return View("~/Views/Boekingen/Step03.cshtml", klant);
+            var beestjes = await _beestjeService.GetAllBeestjesAsync();
+
+            var model = new Step03ViewModel
+            {
+                Klant = klant,
+                Beestjes = beestjes,
+                Datum = eventDate 
+            };
+
+            return View("~/Views/Boekingen/Step03.cshtml", model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Step03(Step03ViewModel model)
+        {
+            // Validate the selected beestjes using the BoekingValidation method
+            var errors = await _boekingService.BoekingValidation(model);
+
+            // If there are validation errors, return the view with those errors
+            if (errors.Any())
+            {
+                // Re-fetch Beestjes for the view to display again
+                model.Beestjes = await _beestjeService.GetAllBeestjesAsync();
+
+                // Add the errors to the ModelState to display them in the view
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+
+                return View("~/Views/Boekingen/Step03.cshtml", model);
+            }
+
+            // Proceed with further logic after validation is successful (e.g., save data, move to next step)
+            return RedirectToAction("Step04");
+        }
+
+
+
+
 
 
 

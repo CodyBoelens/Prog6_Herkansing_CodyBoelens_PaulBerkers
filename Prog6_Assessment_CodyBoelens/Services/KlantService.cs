@@ -22,10 +22,10 @@ namespace Prog6_Assessment_CodyBoelens.Services
             _userManager = userManager;
         }
 
-        public List<KlantViewModel> GetKlantViewModels()
+        public List<KlantViewModels> GetKlantViewModels()
         {
             var klanten = _context.Klanten.ToList();
-            var klantList = new List<KlantViewModel>();
+            var klantList = new List<KlantViewModels>();
 
             foreach (var klant in klanten)
             {
@@ -34,7 +34,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                     .Select(k => k.Rank)
                     .FirstOrDefault() ?? "Geen Klantkaart";
 
-                klantList.Add(new KlantViewModel
+                klantList.Add(new KlantViewModels
                 {
                     Id = klant.Id,
                     Name = klant.Name,
@@ -51,7 +51,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return _context.Klantkaarten.ToList();
         }
 
-        public async Task<string> CreateKlantAsync(KlantViewModel klantViewModel)
+        public async Task<string> CreateKlantAsync(KlantViewModels klantViewModel)
         {
             var password = GeneratePassword();
 
@@ -86,7 +86,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return password;
         }
 
-        public KlantViewModel GetKlantById(int id)
+        public KlantViewModels GetKlantById(int id)
         {
             var klant = _context.Klanten.SingleOrDefault(b => b.Id == id);
             var klantkaarten = _context.Klantkaarten.ToList();
@@ -95,7 +95,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
             var user = _userManager.FindByIdAsync(klant.ApplicationUserId).Result;
 
-            return new KlantViewModel
+            return new KlantViewModels
             {
                 Id = id,
                 Name = klant.Name,
@@ -107,7 +107,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             };
         }
 
-        public KlantViewModel GetKlantByApplicationUserId(string applicationUserId)
+        public KlantViewModels GetKlantByApplicationUserId(string applicationUserId)
         {
             // Find the klant using the ApplicationUserId
             var klant = _context.Klanten.SingleOrDefault(b => b.ApplicationUserId == applicationUserId);
@@ -120,7 +120,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             var user = _userManager.FindByIdAsync(applicationUserId).Result;
 
             // Return the populated KlantViewModel
-            return new KlantViewModel
+            return new KlantViewModels
             {
                 Id = klant.Id,
                 Name = klant.Name,
@@ -133,7 +133,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
         }
 
 
-        public async Task<bool> UpdateKlantAsync(KlantViewModel viewModel)
+        public async Task<bool> UpdateKlantAsync(KlantViewModels viewModel)
         {
             var klant = _context.Klanten.SingleOrDefault(b => b.Id == viewModel.Id);
             if (klant == null) return false;
