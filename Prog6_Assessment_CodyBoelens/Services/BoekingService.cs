@@ -79,6 +79,12 @@ namespace Prog6_Assessment_CodyBoelens.Services
                 errors.Add($"Je mag maximaal {maxDieren} dieren boeken met jouw klantenkaart.");
             }
 
+            //Regel 6: Alleen klanten met een Platina kaart kunnen VIP Beestjes boeken
+            if (beestjesList.Any(b => b.Type.TypeName == "VIP") && (klant.KlantkaartId != 3))
+            {
+                errors.Add("Alleen klanten met een Platina kaart kunnen VIP beestjes boeken");
+            }
+
             return errors;
         }
 

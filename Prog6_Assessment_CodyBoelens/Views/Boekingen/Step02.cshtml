@@ -10,6 +10,7 @@
 <form asp-action="Step02" method="post">
     <!-- Hidden field to include eventDate in the form submission -->
     <input type="hidden" name="eventDate" value="@ViewBag.EventDate" />
+    <input type="hidden"  name="KlantkaartId" value="@Model?.KlantkaartId" />
 
     <label for="Name">Naam:</label>
     <input readonly type="text" id="Name" name="Name" class="form-control" value="@Model?.Name" required />
