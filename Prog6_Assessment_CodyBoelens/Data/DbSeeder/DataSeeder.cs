@@ -62,6 +62,13 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                         TypeId = 2,
                     },
                     new Beestje()
+                    {
+                        Name = "Kuiken",
+                        Price = 5,
+                        Picture = "kuiken.jpeg",
+                        TypeId = 2,
+                    },
+                    new Beestje()
                     {    
                         Name = "Ezel",
                         Price = 100,

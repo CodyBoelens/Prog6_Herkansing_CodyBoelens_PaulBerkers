@@ -7,6 +7,7 @@ using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Data.Migrations;
 using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
+using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,7 +45,12 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(KlantViewModels klantViewModel)
         {
-            if (!ModelState.IsValid) return View(klantViewModel);
+            if (!ModelState.IsValid)
+            {
+                klantViewModel.allRanks = _klantService.GetAllKlantkaarten();
+                TempData["errorMessage"] = "Vul de juiste gegevens in.";
+                return View(klantViewModel);
+            } 
 
             try
             {
@@ -72,7 +78,12 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(KlantViewModels viewModel)
         {
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid)
+            {
+                viewModel.allRanks = _klantService.GetAllKlantkaarten();
+                TempData["errorMessage"] = "Vul de juiste gegevens in.";
+                return View(viewModel);
+            }
 
             var success = await _klantService.UpdateKlantAsync(viewModel);
             if (!success) return RedirectToAction("Index");
