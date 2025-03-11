@@ -36,92 +36,92 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     new Beestje()
                     {
                         Name = "Aap",
-                        Price = 10,
-                        Picture = "aap.jpeg",
+                        Price = 300,
+                        Picture = "aap.jpg",
                         TypeId = 1,
                     },
                     new Beestje()
                     {
                         Name = "Leeuw",
-                        Price = 10,
+                        Price = 600,
                         Picture = "leeuw.jpg",
                         TypeId = 1,
                     },
                     new Beestje()
                     {     
                         Name = "Zebra",
-                        Price = 10,
-                        Picture = "zebra.jpeg",
+                        Price = 400,
+                        Picture = "zebra.jpg",
                         TypeId = 1,
                     },
                     new Beestje()
                     {
                         Name = "Hond",
-                        Price = 10,
+                        Price = 70,
                         Picture = "hond.jpg",
                         TypeId = 2,
                     },
                     new Beestje()
                     {    
                         Name = "Ezel",
-                        Price = 10,
-                        Picture = "ezel.jpeg",
+                        Price = 100,
+                        Picture = "ezel.jpg",
                         TypeId = 2,
                     },
                     new Beestje()
                     {
                         Name = "Koe",
-                        Price = 10,
+                        Price = 120,
                         Picture = "koe.jpg",
                         TypeId = 2,
                     },
                     new Beestje()
                     {
                         Name = "Pinguin",
-                        Price = 10,
-                        Picture = "pinguin.jpeg",
+                        Price = 400,
+                        Picture = "pinguin.jpg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Ijsbeer",
-                        Price = 10,
-                        Picture = "ijsbeer.jpeg",
+                        Price = 800,
+                        Picture = "ijsbeer.jpg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Zeehond",
-                        Price = 10,
-                        Picture = "zeehond.jpeg",
+                        Price = 300,
+                        Picture = "zeehond.jpg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Kameel",
-                        Price = 10,
+                        Price = 150,
                         Picture = "kameel.jpg",
                         TypeId = 4,
                     },
                     new Beestje()
                     {
                         Name = "Slang",
-                        Price = 10,
-                        Picture = "slang.jpeg",
+                        Price = 50,
+                        Picture = "slang.jpg",
                         TypeId = 4,
                     },
                     new Beestje()
                     {
                         Name = "T-Rex",
-                        Price = 10,
+                        Price = 1000,
                         Picture = "trex.jpg",
                         TypeId = 5,
                     },
                     new Beestje()
                     {
                         Name = "Unicorn",
-                        Price = 10,
-                        Picture = "unicorn.jpeg",
+                        Price = 1200,
+                        Picture = "unicorn.jpg",
                         TypeId = 5,
                     }
                 };
