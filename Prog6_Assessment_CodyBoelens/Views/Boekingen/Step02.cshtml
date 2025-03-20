@@ -9,20 +9,23 @@
 <!-- Always show the form, even for authenticated users -->
 <form asp-action="Step02" method="post">
     <!-- Hidden field to include eventDate in the form submission -->
-    <input type="hidden" name="eventDate" value="@ViewBag.EventDate" />
-    <input type="hidden"  name="KlantkaartId" value="@Model?.KlantkaartId" />
+    <input type="hidden" name="KlantkaartId" value="@Model?.KlantkaartId" />
 
     <label for="Name">Naam:</label>
-    <input readonly type="text" id="Name" name="Name" class="form-control" value="@Model?.Name" required />
+    <input type="text" id="Name" name="Name" class="form-control" value="@Model?.Name" required
+    @(User.Identity.IsAuthenticated ? "readonly" : "") />
 
     <label for="Email" class="mt-3">E-mailadres:</label>
-    <input readonly type="email" id="Email" name="Email" class="form-control" value="@Model?.Email" required />
+    <input type="email" id="Email" name="Email" class="form-control" value="@Model?.Email" required
+    @(User.Identity.IsAuthenticated ? "readonly" : "") />
 
     <label for="Phonenumber" class="mt-3">Telefoonnummer:</label>
-    <input readonly type="text" id="Phonenumber" name="Phonenumber" class="form-control" value="@Model?.PhoneNumber" />
+    <input type="text" id="Phonenumber" name="Phonenumber" class="form-control" value="@Model?.PhoneNumber"
+    @(User.Identity.IsAuthenticated ? "readonly" : "") />
 
     <label for="Adres" class="mt-3">Adres:</label>
-    <input readonly type="text" id="Adres" name="Adres" class="form-control" value="@Model?.Adres" />
+    <input type="text" id="Adres" name="Adres" class="form-control" value="@Model?.Adres"
+    @(User.Identity.IsAuthenticated ? "readonly" : "") />
 
     <button type="submit" class="btn btn-primary mt-3">Volgende</button>
 </form>
