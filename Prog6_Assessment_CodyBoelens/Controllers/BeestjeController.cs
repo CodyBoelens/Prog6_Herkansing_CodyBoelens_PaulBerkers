@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var beestjeViewModel = new BeestjeViewModel
+            var beestjeViewModel = new BeestjeViewModels
             {
                 allTypes = await _beestjeService.GetAllTypesAsync(),
                 allImageNames = await _beestjeService.GetAllImageNamesAsync()
@@ -36,7 +37,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BeestjeViewModel beestjeViewModel)
+        public async Task<IActionResult> Create(BeestjeViewModels beestjeViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(BeestjeViewModel beestjeViewModel)
+        public async Task<IActionResult> Edit(BeestjeViewModels beestjeViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -112,7 +113,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(BeestjeViewModel beestjeViewModel)
+        public async Task<IActionResult> Delete(BeestjeViewModels beestjeViewModel)
         {
             try
             {

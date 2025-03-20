@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel
 {
 
-    public class KlantViewModel
+    public class KlantViewModels
     {
         public int Id { get; set; }
 

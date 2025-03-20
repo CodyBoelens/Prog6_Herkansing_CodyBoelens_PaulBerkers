@@ -1,25 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 
 namespace Prog6_Assessment_CodyBoelens.Data.DbEntities
 {
-    [Table("Beestje")]
-    public class Beestje
+    [Table("Boeking")]
+    public class Boeking
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        [StringLength(50)]
+        public DateTime Date { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
-        public double Price { get; set; }
-        [Required]
-        [StringLength(50)]
-        public string Picture { get; set; }
-        [Required]
-        [ForeignKey("Type")]
-        public int TypeId { get; set; }
+        public string Adress { get; set; }
+        public int PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public bool Is_Confirmed { get; set; }
 
         public ICollection<BeestjeBoeking> BeestBoekingen { get; set; }
     }

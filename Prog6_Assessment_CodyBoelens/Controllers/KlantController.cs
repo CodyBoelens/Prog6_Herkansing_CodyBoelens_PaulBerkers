@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Data.Migrations;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
@@ -33,7 +34,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var klantViewModel = new KlantViewModel
+            var klantViewModel = new KlantViewModels
             {
                 allRanks = _klantService.GetAllKlantkaarten()
             };
@@ -42,7 +43,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(KlantViewModel klantViewModel)
+        public async Task<IActionResult> Create(KlantViewModels klantViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +76,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(KlantViewModel viewModel)
+        public async Task<IActionResult> Edit(KlantViewModels viewModel)
         {
             if (!ModelState.IsValid)
             {

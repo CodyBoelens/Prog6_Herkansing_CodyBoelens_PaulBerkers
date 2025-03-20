@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Data.DbSeeder;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Services;
 using System.Security.Principal;
 
@@ -32,6 +33,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddScoped<IKlantService, KlantService>();
 builder.Services.AddScoped<IBeestjeService, BeestjeService>();
+builder.Services.AddScoped<IBoekingService, BoekingService>();
 
 var app = builder.Build();
     var scope = app.Services.CreateScope();

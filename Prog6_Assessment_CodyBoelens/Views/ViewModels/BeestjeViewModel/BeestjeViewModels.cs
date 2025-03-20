@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel
 {
-    public class BeestjeViewModel
+    public class BeestjeViewModels
     {
         [Required]
         public int Id { get; set; }

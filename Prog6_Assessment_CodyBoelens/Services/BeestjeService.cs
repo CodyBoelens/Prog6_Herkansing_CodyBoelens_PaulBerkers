@@ -1,22 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Prog6_Assessment_CodyBoelens.Services
 {
-    public interface IBeestjeService
-    {
-        Task<List<BeestjeViewModel>> GetAllBeestjesAsync();
-        Task<BeestjeViewModel> GetBeestjeByIdAsync(int id);
-        Task<bool> CreateBeestjeAsync(BeestjeViewModel viewModel);
-        Task<bool> UpdateBeestjeAsync(BeestjeViewModel viewModel);
-        Task<bool> DeleteBeestjeAsync(int id);
-        Task<List<Types>> GetAllTypesAsync();
-        Task<List<String>> GetAllImageNamesAsync();
-    }
 
     public class BeestjeService : IBeestjeService
     {
@@ -27,11 +18,11 @@ namespace Prog6_Assessment_CodyBoelens.Services
             _context = context;
         }
 
-        public async Task<List<BeestjeViewModel>> GetAllBeestjesAsync()
+        public async Task<List<BeestjeViewModels>> GetAllBeestjesAsync()
         {
             var beestjes = await _context.Beestjes.ToListAsync();
 
-            var beestjeList = new List<BeestjeViewModel>();
+            var beestjeList = new List<BeestjeViewModels>();
             foreach (var beestje in beestjes)
             {
                 var beestjeType = await _context.Types
@@ -39,7 +30,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                     .Select(type => type.TypeName)
                     .FirstOrDefaultAsync();
 
-                beestjeList.Add(new BeestjeViewModel
+                beestjeList.Add(new BeestjeViewModels
                 {
                     Id = beestje.Id,
                     Name = beestje.Name,
@@ -52,7 +43,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return beestjeList;
         }
 
-        public async Task<BeestjeViewModel> GetBeestjeByIdAsync(int id)
+        public async Task<BeestjeViewModels> GetBeestjeByIdAsync(int id)
         {
             var beestje = await _context.Beestjes.SingleOrDefaultAsync(b => b.Id == id);
             if (beestje == null) return null;
@@ -62,7 +53,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                 .Select(type => type.TypeName)
                 .FirstOrDefaultAsync();
 
-            return new BeestjeViewModel
+            return new BeestjeViewModels
             {
                 Id = beestje.Id,
                 Name = beestje.Name,
@@ -74,7 +65,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             };
         }
 
-        public async Task<bool> CreateBeestjeAsync(BeestjeViewModel viewModel)
+        public async Task<bool> CreateBeestjeAsync(BeestjeViewModels viewModel)
         {
             try
             {
@@ -96,7 +87,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             }
         }
 
-        public async Task<bool> UpdateBeestjeAsync(BeestjeViewModel viewModel)
+        public async Task<bool> UpdateBeestjeAsync(BeestjeViewModels viewModel)
         {
             try
             {
@@ -156,5 +147,33 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
             return imageNameList;
         }
+
+        public async Task<List<BeestjeViewModels>> GetBeestjesByIdsAsync(List<int> ids)
+        {
+            var beestjes = await _context.Beestjes
+                .Where(b => ids.Contains(b.Id))
+                .ToListAsync();
+
+            var beestjeList = new List<BeestjeViewModels>();
+            foreach (var beestje in beestjes)
+            {
+                var beestjeType = await _context.Types
+                    .Where(type => type.Id == beestje.TypeId)
+                    .Select(type => type.TypeName)
+                    .FirstOrDefaultAsync();
+
+                beestjeList.Add(new BeestjeViewModels
+                {
+                    Id = beestje.Id,
+                    Name = beestje.Name,
+                    Type = beestjeType,
+                    Price = beestje.Price,
+                    Picture = beestje.Picture
+                });
+            }
+
+            return beestjeList;
+        }
+
     }
 }

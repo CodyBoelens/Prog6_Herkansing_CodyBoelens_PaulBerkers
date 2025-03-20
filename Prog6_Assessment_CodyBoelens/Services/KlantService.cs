@@ -2,20 +2,14 @@
 using Prog6_Assessment_CodyBoelens.Controllers;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Prog6_Assessment_CodyBoelens.Services
 {
-    public interface IKlantService
-    {
-        List<KlantViewModel> GetKlantViewModels();
-        List<Klantkaart> GetAllKlantkaarten();
-        Task<string> CreateKlantAsync(KlantViewModel klantViewModel);
-        KlantViewModel GetKlantById(int id);
-        Task<bool> UpdateKlantAsync(KlantViewModel viewModel);
-    }
+    
 
     public class KlantService : IKlantService
     {
@@ -28,10 +22,10 @@ namespace Prog6_Assessment_CodyBoelens.Services
             _userManager = userManager;
         }
 
-        public List<KlantViewModel> GetKlantViewModels()
+        public List<KlantViewModels> GetKlantViewModels()
         {
             var klanten = _context.Klanten.ToList();
-            var klantList = new List<KlantViewModel>();
+            var klantList = new List<KlantViewModels>();
 
             foreach (var klant in klanten)
             {
@@ -40,7 +34,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                     .Select(k => k.Rank)
                     .FirstOrDefault() ?? "Geen Klantkaart";
 
-                klantList.Add(new KlantViewModel
+                klantList.Add(new KlantViewModels
                 {
                     Id = klant.Id,
                     Name = klant.Name,
@@ -57,7 +51,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return _context.Klantkaarten.ToList();
         }
 
-        public async Task<string> CreateKlantAsync(KlantViewModel klantViewModel)
+        public async Task<string> CreateKlantAsync(KlantViewModels klantViewModel)
         {
             var password = GeneratePassword();
 
@@ -92,7 +86,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return password;
         }
 
-        public KlantViewModel GetKlantById(int id)
+        public KlantViewModels GetKlantById(int id)
         {
             var klant = _context.Klanten.SingleOrDefault(b => b.Id == id);
             var klantkaarten = _context.Klantkaarten.ToList();
@@ -101,9 +95,34 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
             var user = _userManager.FindByIdAsync(klant.ApplicationUserId).Result;
 
-            return new KlantViewModel
+            return new KlantViewModels
             {
                 Id = id,
+                Name = klant.Name,
+                Adres = klant.Adres,  
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                KlantkaartId = klant.KlantkaartId,
+                allRanks = klantkaarten
+            };
+        }
+
+        public KlantViewModels GetKlantByApplicationUserId(string applicationUserId)
+        {
+            // Find the klant using the ApplicationUserId
+            var klant = _context.Klanten.SingleOrDefault(b => b.ApplicationUserId == applicationUserId);
+            var klantkaarten = _context.Klantkaarten.ToList();
+
+            // If no klant is found, return null
+            if (klant == null) return null;
+
+            // Retrieve the associated user using the UserManager
+            var user = _userManager.FindByIdAsync(applicationUserId).Result;
+
+            // Return the populated KlantViewModel
+            return new KlantViewModels
+            {
+                Id = klant.Id,
                 Name = klant.Name,
                 Adres = klant.Adres,
                 Email = user.Email,
@@ -113,7 +132,8 @@ namespace Prog6_Assessment_CodyBoelens.Services
             };
         }
 
-        public async Task<bool> UpdateKlantAsync(KlantViewModel viewModel)
+
+        public async Task<bool> UpdateKlantAsync(KlantViewModels viewModel)
         {
             var klant = _context.Klanten.SingleOrDefault(b => b.Id == viewModel.Id);
             if (klant == null) return false;
