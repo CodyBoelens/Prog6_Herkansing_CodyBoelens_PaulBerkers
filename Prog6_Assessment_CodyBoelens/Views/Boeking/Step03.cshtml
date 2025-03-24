@@ -8,6 +8,13 @@
     <p><strong>Geselecteerde Datum:</strong> @Model.Datum</p>
 </div>
 
+<hr />
+
+<!-- Display validation errors -->
+<div class="alert alert-danger" role="alert" style="display: @((ViewData.ModelState.IsValid) ? "none" : "block")">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+
 <!-- Form for selecting Beestjes -->
 <form asp-action="Step03" method="post">
 
