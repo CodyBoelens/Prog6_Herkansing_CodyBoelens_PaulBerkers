@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Prog6_Assessment_CodyBoelens.Models;
 using System.Diagnostics;
 
@@ -15,6 +16,8 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.EventDate = HttpContext.Session.GetString("selectedEventDate");
+
             return View();
         }
 
