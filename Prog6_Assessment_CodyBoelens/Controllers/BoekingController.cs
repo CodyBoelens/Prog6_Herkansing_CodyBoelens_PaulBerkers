@@ -182,15 +182,26 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            // Create the ViewModel
-            var model = new Step04ViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Klant = klant,
-                Beestjes = selectedBeestjes,
-                Datum = getEventDateFromSession()
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                klant = _klantService.GetKlantByApplicationUserId(userId);
+            }
+
+            // Map data to BoekingViewModel and save the booking
+            var boekingViewModel = new BoekingViewModel
+            {
+                Date = eventDate,
+                Name = klant.Name,
+                Adress = klant.Adres,
+                PhoneNumber = klant.PhoneNumber,
+                Email = klant.Email, 
+                Is_Confirmed = true,
+                KlantId = klant.Id > 0 ? klant.Id : null, 
+                BeestjeIds = selectedBeestjesIds
             };
 
-            //save booking
+            await _boekingService.AddBoekingAsync(boekingViewModel);
 
             // Clear the session after booking
             HttpContext.Session.Remove("selectedEventDate");
@@ -198,6 +209,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             HttpContext.Session.Remove("SelectedBeestjes");
 
             // Redirect to a confirmation page
+            TempData["orderSucces"] = "De boeking is gelukt!";
             return RedirectToAction("Index", "Home");
         }
 

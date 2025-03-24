@@ -4,6 +4,7 @@ using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Interfaces;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel;
+using Prog6_Assessment_CodyBoelens.Models;
 
 namespace Prog6_Assessment_CodyBoelens.Services
 {
@@ -19,7 +20,33 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
         public async Task AddBoekingAsync(BoekingViewModel boekingViewModel)
         {
-           
+            var boeking = new Boeking
+            {
+                Date = boekingViewModel.Date,
+                Name = boekingViewModel.Name,
+                Adress = boekingViewModel.Adress,
+                PhoneNumber = boekingViewModel.PhoneNumber,
+                Email = boekingViewModel.Email,
+                Is_Confirmed = boekingViewModel.Is_Confirmed,
+                KlantId = boekingViewModel.KlantId 
+            };
+
+            _context.Boekingen.Add(boeking);
+            await _context.SaveChangesAsync();
+
+            if (boekingViewModel.BeestjeIds != null && boekingViewModel.BeestjeIds.Any())
+            {
+                foreach (var beestjeId in boekingViewModel.BeestjeIds)
+                {
+                    var beestjeBoeking = new BeestjeBoeking
+                    {
+                        BoekingID = boeking.Id,
+                        BeestjeID = beestjeId
+                    };
+                    _context.BeestjeBoekingen.Add(beestjeBoeking);
+                }
+                await _context.SaveChangesAsync();
+            }
 
         }
 

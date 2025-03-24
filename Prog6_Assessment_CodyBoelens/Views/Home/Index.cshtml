@@ -13,6 +13,12 @@
             @TempData["EventDateErrorStep01"]
         </div>
     }
+    @if (TempData["orderSucces"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["orderSucces"]
+        </div>
+    }
 
     <div class="text-center mt-4">
         <label for="eventDate" class="form-label">Selecteer een datum voor je feestje:</label>
