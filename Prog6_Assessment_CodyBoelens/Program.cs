@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Data.DbSeeder;
+using Prog6_Assessment_CodyBoelens.Interfaces;
+using Prog6_Assessment_CodyBoelens.Services;
 using System.Security.Principal;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,20 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<DataSeeder>();
+builder.Services.AddScoped<IKlantService, KlantService>();
+builder.Services.AddScoped<IBeestjeService, BeestjeService>();
+builder.Services.AddScoped<IBoekingService, BoekingService>();
+
+// Add distributed memory cache (required for session)
+builder.Services.AddDistributedMemoryCache();
+
+// Add session services
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+    options.Cookie.HttpOnly = true; // Make cookie HTTP-only
+    options.Cookie.IsEssential = true; // Required for GDPR compliance
+});
 
 var app = builder.Build();
     var scope = app.Services.CreateScope();
@@ -55,6 +71,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

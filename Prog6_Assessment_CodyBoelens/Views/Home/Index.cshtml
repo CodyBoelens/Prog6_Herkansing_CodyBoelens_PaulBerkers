@@ -2,6 +2,24 @@
     ViewData["Title"] = "Beestje Op Je Feestje";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welkom bij beestje op je feestje</h1>
-</div>
+<form asp-controller="Boeking" asp-action="Step01" method="post">
+    <div class="text-center">
+        <h1 class="display-4">Welkom bij beestje op je feestje</h1>
+    </div>
+
+    @if (TempData["EventDateErrorStep01"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["EventDateErrorStep01"]
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <label for="eventDate" class="form-label">Selecteer een datum voor je feestje:</label>
+        <input type="date" id="eventDate" name="eventDate" class="form-control" value="@ViewBag.EventDate" style="width: 300px; margin: 0 auto;" />
+    </div>
+
+    <div class="text-center mt-3">
+        <button type="submit" class="btn btn-primary">Verzenden</button>
+    </div>
+</form>

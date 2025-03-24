@@ -1,247 +1,130 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Prog6_Assessment_CodyBoelens.Data;
-using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using Prog6_Assessment_CodyBoelens.Interfaces;
+using Prog6_Assessment_CodyBoelens.Services;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
+using System.Threading.Tasks;
 
 namespace Prog6_Assessment_CodyBoelens.Controllers
 {
     [Authorize(Roles = "Boerderij")]
     public class BeestjeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IBeestjeService _beestjeService;
 
-        public BeestjeController(ApplicationDbContext context)
+        public BeestjeController(IBeestjeService beestjeService)
         {
-            _context = context;
+            _beestjeService = beestjeService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var beestjes = _context.Beestjes.ToList();
-            List<BeestjeViewModel> beestjeList = new();
-            if (beestjes != null)
-            {
-                foreach (var beestje in beestjes)
-                {
-                    var beestjeType = _context.Types
-                        .Where(type => type.Id == beestje.TypeId)
-                        .Select(type => type.TypeName).FirstOrDefault();
-
-                    var BeestjeViewModel = new BeestjeViewModel()
-                    {
-                        Id = beestje.Id,
-                        Name = beestje.Name,
-                        Type = beestjeType,
-                        Price = beestje.Price,
-                        Picture = beestje.Picture,
-                    };
-
-                    beestjeList.Add(BeestjeViewModel);
-                }
-                return View(beestjeList);
-            }
-            return View("Index", beestjeList);
+            var beestjes = await _beestjeService.GetAllBeestjesAsync();
+            return View(beestjes);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var allBeestjeTypes = _context.Types.ToList();
-
-            var beestjeviewmodel = new BeestjeViewModel()
+            var beestjeViewModel = new BeestjeViewModels
             {
-                allTypes = allBeestjeTypes
+                allTypes = await _beestjeService.GetAllTypesAsync(),
+                allImageNames = await _beestjeService.GetAllImageNamesAsync()
             };
 
-            return View(beestjeviewmodel);
+            return View(beestjeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(BeestjeViewModel beestjeViewModel)
+        public async Task<IActionResult> Create(BeestjeViewModels beestjeViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
+                TempData["errorMessage"] = "Vul de juiste gegevens in.";
+                return View(beestjeViewModel);
+            }
+
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var allBeestjeTypes = _context.Types.ToList();
-                    var beestje = new Beestje()
-                    {
-                        Name = beestjeViewModel.Name,
-                        Price = beestjeViewModel.Price,
-                        TypeId = beestjeViewModel.TypeId,
-                        Picture = beestjeViewModel.Picture,
-                    };
-
-                    _context.Add(beestje);
-                    _context.SaveChanges();
-
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    var types = _context.Types.ToList();
-
-                    var errors1 = ModelState.Values.SelectMany(v => v.Errors)
-                      .Select(e => e.ErrorMessage)
-                      .ToList();
-
-                    var viewmodel = new BeestjeViewModel
-                    {
-                        allTypes = types
-                    };
-                    TempData["errorMessage"] = "Vul de juiste gegevens in.";
-                    return View("Create", viewmodel);
-                }
+                await _beestjeService.CreateBeestjeAsync(beestjeViewModel);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                var types = _context.Types.ToList();
-
-                var viewmodel = new BeestjeViewModel
-                {
-                    allTypes = types
-                };
                 TempData["errorMessage"] = ex.Message;
-                return View("Create", viewmodel);
+                beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
+                return View(beestjeViewModel);
             }
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var beestje = _context.Beestjes.SingleOrDefault(b => b.Id == id);
-            var types = _context.Types.ToList();
-
-            if (beestje != null)
-            {
-                var viewModel = new BeestjeViewModel
-                {
-                    Id = beestje.Id,
-                    Name = beestje.Name,
-                    Price = beestje.Price,
-                    TypeId = beestje.TypeId,
-                    Picture = beestje.Picture,
-                    allTypes = types
-                };
-
-                return View(viewModel);
-            }
-            else
+            var beestjeViewModel = await _beestjeService.GetBeestjeByIdAsync(id);
+            if (beestjeViewModel == null)
             {
                 return RedirectToAction("Index");
             }
+
+            beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+            beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
+            return View(beestjeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(BeestjeViewModel viewModel)
+        public async Task<IActionResult> Edit(BeestjeViewModels beestjeViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
+                TempData["errorMessage"] = "Vul de juiste gegevens in.";
+                return View(beestjeViewModel);
+            }
+
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var allBeestjeTypes = _context.Types.ToList();
-                    var beestje = new Beestje()
-                    {
-                        Id = viewModel.Id,
-                        Name = viewModel.Name,
-                        Price = viewModel.Price,
-                        TypeId = viewModel.TypeId,
-                        Picture = viewModel.Picture,
-                    };
-
-                    _context.Update(beestje);
-                    _context.SaveChanges();
-
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    var types = _context.Types.ToList();
-
-                    var errors1 = ModelState.Values.SelectMany(v => v.Errors)
-                      .Select(e => e.ErrorMessage)
-                      .ToList();
-
-                    var viewmodel = new BeestjeViewModel
-                    {
-                        allTypes = types
-                    };
-                    TempData["errorMessage"] = "Vul de juiste gegevens in.";
-                    return View("Create", viewmodel);
-                }
+                await _beestjeService.UpdateBeestjeAsync(beestjeViewModel);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                var types = _context.Types.ToList();
-
-                var viewmodel = new BeestjeViewModel
-                {
-                    allTypes = types
-                };
                 TempData["errorMessage"] = ex.Message;
-                return View("Create", viewmodel);
+                beestjeViewModel.allTypes = await _beestjeService.GetAllTypesAsync();
+                beestjeViewModel.allImageNames = await _beestjeService.GetAllImageNamesAsync();
+                return View(beestjeViewModel);
             }
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var beestje = _context.Beestjes.SingleOrDefault(b => b.Id == id);
-            var beestjeType = _context.Types
-            .Where(type => type.Id == beestje.TypeId)
-            .Select(type => type.TypeName)
-            .FirstOrDefault();
-            var types = _context.Types.ToList();
-
-            if (beestje != null)
-            {
-                var viewModel = new BeestjeViewModel
-                {
-                    Id = beestje.Id,
-                    Name = beestje.Name,
-                    Price = beestje.Price,
-                    Type = beestjeType,
-                    Picture = beestje.Picture,
-                    allTypes = types
-                };
-
-                return View(viewModel);
-            }
-            else
+            var beestjeViewModel = await _beestjeService.GetBeestjeByIdAsync(id);
+            if (beestjeViewModel == null)
             {
                 return RedirectToAction("Index");
             }
+
+            return View(beestjeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Delete(BeestjeViewModel viewModel)
+        public async Task<IActionResult> Delete(BeestjeViewModels beestjeViewModel)
         {
             try
             {
-                var beestje = _context.Beestjes.SingleOrDefault(x => x.Id == viewModel.Id);
-
-                if (beestje != null)
-                {
-                    _context.Beestjes.Remove(beestje);
-                    _context.SaveChanges();
-                    TempData["successMessage"] = $"Beestje {beestje.Name} has been deleted";
-
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    TempData["errorMessage"] = $"Beestje details not availabe with the Id: {viewModel.Id}";
-
-                    return RedirectToAction(nameof(Index));
-                }
+                await _beestjeService.DeleteBeestjeAsync(beestjeViewModel.Id);
+                TempData["successMessage"] = $"Beestje {beestjeViewModel.Name} is verwijderd.";
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 TempData["errorMessage"] = ex.Message;
-
-                return View();
+                return View(beestjeViewModel);
             }
         }
     }

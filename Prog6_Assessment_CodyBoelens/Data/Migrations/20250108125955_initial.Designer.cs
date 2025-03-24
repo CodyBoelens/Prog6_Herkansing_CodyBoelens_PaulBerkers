@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prog6_Assessment_CodyBoelens.Data;
 
@@ -11,9 +12,10 @@ using Prog6_Assessment_CodyBoelens.Data;
 namespace Prog6_Assessment_CodyBoelens.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250108125955_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,63 +251,6 @@ namespace Prog6_Assessment_CodyBoelens.Data.Migrations
                     b.ToTable("Beestje");
                 });
 
-            modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.BeestjeBoeking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BeestjeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BoekingID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BeestjeID");
-
-                    b.HasIndex("BoekingID");
-
-                    b.ToTable("BeestjeBoeking");
-                });
-
-            modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.Boeking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Adress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Is_Confirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Boeking");
-                });
-
             modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.Klant", b =>
                 {
                     b.Property<int>("Id")
@@ -418,31 +363,6 @@ namespace Prog6_Assessment_CodyBoelens.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.BeestjeBoeking", b =>
-                {
-                    b.HasOne("Prog6_Assessment_CodyBoelens.Data.DbEntities.Beestje", null)
-                        .WithMany("BeestBoekingen")
-                        .HasForeignKey("BeestjeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Prog6_Assessment_CodyBoelens.Data.DbEntities.Boeking", null)
-                        .WithMany("BeestBoekingen")
-                        .HasForeignKey("BoekingID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.Beestje", b =>
-                {
-                    b.Navigation("BeestBoekingen");
-                });
-
-            modelBuilder.Entity("Prog6_Assessment_CodyBoelens.Data.DbEntities.Boeking", b =>
-                {
-                    b.Navigation("BeestBoekingen");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,61 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel.Step04ViewModel
+
+<div class="card p-4 mb-4 shadow-sm">
+    <h2 class="mb-3">Overzicht van de Boeking</h2>
+
+    <h4>Datum van de Boeking</h4>
+    <p><strong>Geselecteerde Datum:</strong> @Model.Datum.ToString("dd-MM-yyyy")</p>
+
+    <hr />
+
+    <h4>Klantinformatie</h4>
+    <p><strong>Naam:</strong> @Model.Klant.Name</p>
+    <p><strong>Email:</strong> @Model.Klant.Email</p>
+    <p><strong>Telefoonnummer:</strong> @Model.Klant.PhoneNumber</p>
+    <p><strong>Adres:</strong> @Model.Klant.Adres</p>
+
+    <hr />
+
+    <h4>Geselecteerde Beestjes</h4>
+    <div class="row">
+        @foreach (var beestje in Model.Beestjes)
+        {
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@Url.Content($"~/images/beestjes/{beestje.Picture}")" class="card-img-top" alt="@beestje.Name">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@beestje.Name</h5>
+                        <p><strong>Prijs:</strong> €@beestje.Price</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr />
+
+    <h4>Prijs</h4>
+    <div class="row">
+        <p>toon hier de prijs</p>
+    </div>
+
+    <hr />
+
+    <div class="text-center mt-4">
+        <form asp-action="ConfirmBooking" asp-controller="Boeking" method="post">
+            <input type="hidden" name="Klant.Name" value="@Model.Klant.Name" />
+            <input type="hidden" name="Klant.Email" value="@Model.Klant.Email" />
+            <input type="hidden" name="Klant.PhoneNumber" value="@Model.Klant.PhoneNumber" />
+            <input type="hidden" name="Klant.Adres" value="@Model.Klant.Adres" />
+            <input type="hidden" name="Klant.KlantkaartId" value="@Model.Klant.KlantkaartId" />
+            <input type="hidden" name="Datum" value="@Model.Datum.ToString("yyyy-MM-dd")" />
+
+            @foreach (var beestje in Model.Beestjes)
+            {
+                <input type="hidden" name="SelectedBeestjesIds" value="@beestje.Id" />
+            }
+
+            <button type="submit" class="btn btn-success">Bevestigen</button>
+        </form>
+    </div>
+</div>

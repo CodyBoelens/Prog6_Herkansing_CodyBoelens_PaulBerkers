@@ -1,0 +1,41 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel.KlantViewModels
+
+@{
+    ViewData["Title"] = "Contactinformatie";
+}
+
+<h2>Contactinformatie</h2>
+
+<p>Geselecteerde datum: @ViewBag.EventDate</p>
+
+<!-- Always show the form -->
+<form asp-action="Step02" method="post">
+    <!-- Hidden field for KlantkaartId -->
+    <input asp-for="KlantkaartId" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" readonly="@(User.Identity.IsAuthenticated ? "readonly" : null)" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly="@(User.Identity.IsAuthenticated ? "readonly" : null)" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" readonly="@(User.Identity.IsAuthenticated ? "readonly" : null)" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Adres"></label>
+        <input asp-for="Adres" class="form-control" readonly="@(User.Identity.IsAuthenticated ? "readonly" : null)" />
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Volgende</button>
+</form>

@@ -36,92 +36,99 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     new Beestje()
                     {
                         Name = "Aap",
-                        Price = 10,
-                        Picture = "aap.jpg",
+                        Price = 300,
+                        Picture = "aap.jpeg",
                         TypeId = 1,
                     },
                     new Beestje()
                     {
                         Name = "Leeuw",
-                        Price = 10,
+                        Price = 750,
                         Picture = "leeuw.jpg",
                         TypeId = 1,
                     },
                     new Beestje()
-                    {     
+                    {
                         Name = "Zebra",
-                        Price = 10,
-                        Picture = "zebra.jpg",
+                        Price = 450,
+                        Picture = "zebra.jpeg",
                         TypeId = 1,
                     },
                     new Beestje()
                     {
                         Name = "Hond",
-                        Price = 10,
+                        Price = 50,
                         Picture = "hond.jpg",
                         TypeId = 2,
                     },
                     new Beestje()
-                    {    
+                    {
+                        Name = "Kuiken",
+                        Price = 30,
+                        Picture = "kuiken.jpeg",
+                        TypeId = 2,
+                    },
+                    new Beestje()
+                    {
                         Name = "Ezel",
-                        Price = 10,
-                        Picture = "ezel.jpg",
+                        Price = 95,
+                        Picture = "ezel.jpeg",
                         TypeId = 2,
                     },
                     new Beestje()
                     {
                         Name = "Koe",
-                        Price = 10,
+                        Price = 150,
                         Picture = "koe.jpg",
                         TypeId = 2,
                     },
                     new Beestje()
                     {
                         Name = "Pinguin",
-                        Price = 10,
-                        Picture = "pinguin.jpg",
+                        Price = 350,
+                        Picture = "pinguin.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Ijsbeer",
-                        Price = 10,
-                        Picture = "ijsbeer.jpg",
+                        Price = 900,
+                        Picture = "ijsbeer.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Zeehond",
-                        Price = 10,
-                        Picture = "zeehond.jpg",
+                        Price = 400,
+                        Picture = "zeehond.jpeg",
                         TypeId = 3,
                     },
                     new Beestje()
                     {
                         Name = "Kameel",
-                        Price = 10,
+                        Price = 200,
                         Picture = "kameel.jpg",
                         TypeId = 4,
                     },
                     new Beestje()
                     {
                         Name = "Slang",
-                        Price = 10,
-                        Picture = "slang.jpg",
+                        Price = 80,
+                        Picture = "slang.jpeg",
                         TypeId = 4,
                     },
                     new Beestje()
                     {
                         Name = "T-Rex",
-                        Price = 10,
-                        Picture = "trex.jpg",
+                        Price = 1800,
+                        Picture = "T-Rex.jpg",
                         TypeId = 5,
                     },
                     new Beestje()
                     {
                         Name = "Unicorn",
-                        Price = 10,
-                        Picture = "unicorn.jpg",
+                        Price = 1200,
+                        Picture = "unicorn.jpeg",
                         TypeId = 5,
                     }
                 };

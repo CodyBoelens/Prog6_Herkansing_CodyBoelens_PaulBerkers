@@ -1,4 +1,4 @@
-﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel.KlantViewModel
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel.KlantViewModels
 
 @{
     ViewData["Title"] = "Create Klant";
@@ -28,7 +28,7 @@
     </div>
     <div class="mb-3">
         <label asp-for="Email" class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" type="email" />
+        <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger" ></span>
     </div>
     <div class="mb-3">
