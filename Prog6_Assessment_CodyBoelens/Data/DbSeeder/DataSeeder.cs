@@ -121,7 +121,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
                     {
                         Name = "T-Rex",
                         Price = 1800,
-                        Picture = "T-Rex.jpg",
+                        Picture = "T-rex.jpg",
                         TypeId = 5,
                     },
                     new Beestje()

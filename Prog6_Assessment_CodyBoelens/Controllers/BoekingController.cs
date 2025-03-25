@@ -103,7 +103,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            var beestjes = await _beestjeService.GetAllBeestjesAsync();
+            var beestjes = await _beestjeService.GetAvailableBeestjesAsync(eventDate);
 
             var model = new Step03ViewModel
             {
@@ -122,13 +122,10 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             // Validate the selected beestjes using the BoekingValidation method
             var errors = await _boekingService.BoekingValidation(model);
 
-            // If there are validation errors, return the view with those errors
             if (errors.Any())
             {
-                // Re-fetch Beestjes for the view to display again
-                model.Beestjes = await _beestjeService.GetAllBeestjesAsync();
+                model.Beestjes = await _beestjeService.GetAvailableBeestjesAsync(model.Datum);
 
-                // Add the errors to the ModelState to display them in the view
                 foreach (var error in errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
@@ -182,15 +179,26 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            // Create the ViewModel
-            var model = new Step04ViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Klant = klant,
-                Beestjes = selectedBeestjes,
-                Datum = getEventDateFromSession()
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                klant = _klantService.GetKlantByApplicationUserId(userId);
+            }
+
+            // Map data to BoekingViewModel and save the booking
+            var boekingViewModel = new BoekingViewModel
+            {
+                Date = eventDate,
+                Name = klant.Name,
+                Adress = klant.Adres,
+                PhoneNumber = klant.PhoneNumber,
+                Email = klant.Email, 
+                Is_Confirmed = true,
+                KlantId = klant.Id > 0 ? klant.Id : null, 
+                BeestjeIds = selectedBeestjesIds
             };
 
-            //save booking
+            await _boekingService.AddBoekingAsync(boekingViewModel);
 
             // Clear the session after booking
             HttpContext.Session.Remove("selectedEventDate");
@@ -198,6 +206,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             HttpContext.Session.Remove("SelectedBeestjes");
 
             // Redirect to a confirmation page
+            TempData["orderSucces"] = "De boeking is gelukt!";
             return RedirectToAction("Index", "Home");
         }
 

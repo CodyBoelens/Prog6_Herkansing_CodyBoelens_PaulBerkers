@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prog6_Assessment_CodyBoelens.Data;
 
@@ -11,9 +12,10 @@ using Prog6_Assessment_CodyBoelens.Data;
 namespace Prog6_Assessment_CodyBoelens.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250324141723_AddKlantIdToBoeking")]
+    partial class AddKlantIdToBoeking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,16 +296,12 @@ namespace Prog6_Assessment_CodyBoelens.Data.Migrations
                     b.Property<bool>("Is_Confirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("KlantId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
