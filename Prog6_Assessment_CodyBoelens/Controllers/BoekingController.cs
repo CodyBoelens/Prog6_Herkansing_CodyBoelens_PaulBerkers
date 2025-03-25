@@ -103,7 +103,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            var beestjes = await _beestjeService.GetAllBeestjesAsync();
+            var beestjes = await _beestjeService.GetAvailableBeestjesAsync(eventDate);
 
             var model = new Step03ViewModel
             {
@@ -122,13 +122,10 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             // Validate the selected beestjes using the BoekingValidation method
             var errors = await _boekingService.BoekingValidation(model);
 
-            // If there are validation errors, return the view with those errors
             if (errors.Any())
             {
-                // Re-fetch Beestjes for the view to display again
-                model.Beestjes = await _beestjeService.GetAllBeestjesAsync();
+                model.Beestjes = await _beestjeService.GetAvailableBeestjesAsync(model.Datum);
 
-                // Add the errors to the ModelState to display them in the view
                 foreach (var error in errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
