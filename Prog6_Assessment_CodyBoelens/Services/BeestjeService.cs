@@ -43,6 +43,45 @@ namespace Prog6_Assessment_CodyBoelens.Services
             return beestjeList;
         }
 
+        public async Task<List<BeestjeViewModels>> GetAvailableBeestjesAsync(DateTime date)
+        {
+            // Get Beestje IDs that are booked on the given date
+            var bookedBeestjeIds = await _context.BeestjeBoekingen
+                .Join(_context.Boekingen,
+                      bb => bb.BoekingID,
+                      b => b.Id,
+                      (bb, b) => new { bb.BeestjeID, b.Date })
+                .Where(x => x.Date.Date == date.Date) // Match the date (ignoring time)
+                .Select(x => x.BeestjeID)
+                .Distinct()
+                .ToListAsync();
+
+            // Get all Beestjes that are NOT in the booked list
+            var availableBeestjes = await _context.Beestjes
+                .Where(b => !bookedBeestjeIds.Contains(b.Id))
+                .ToListAsync();
+
+            var beestjeList = new List<BeestjeViewModels>();
+            foreach (var beestje in availableBeestjes)
+            {
+                var beestjeType = await _context.Types
+                    .Where(type => type.Id == beestje.TypeId)
+                    .Select(type => type.TypeName)
+                    .FirstOrDefaultAsync();
+
+                beestjeList.Add(new BeestjeViewModels
+                {
+                    Id = beestje.Id,
+                    Name = beestje.Name,
+                    Type = beestjeType,
+                    Price = beestje.Price,
+                    Picture = beestje.Picture
+                });
+            }
+
+            return beestjeList;
+        }
+
         public async Task<BeestjeViewModels> GetBeestjeByIdAsync(int id)
         {
             var beestje = await _context.Beestjes.SingleOrDefaultAsync(b => b.Id == id);
