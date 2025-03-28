@@ -18,6 +18,69 @@ namespace Prog6_Assessment_CodyBoelens.Services
             _context = context;
         }
 
+        public async Task<List<BoekingViewModel>> GetAllBoekingsAsync()
+        {
+            return await _context.Boekingen
+                .Select(boeking => new BoekingViewModel
+                {
+                    Id = boeking.Id,
+                    Date = boeking.Date,
+                    Name = boeking.Name,
+                    Email = boeking.Email
+                })
+                .ToListAsync();
+        }
+
+        public async Task<BoekingViewModel> GetBookingByIdAsync(int id)
+        {
+            var boeking = await _context.Boekingen
+                .Where(b => b.Id == id)
+                .Select(b => new BoekingViewModel
+                {
+                    Id = b.Id,
+                    Date = b.Date,
+                    Name = b.Name,
+                    Adress = b.Adress,
+                    PhoneNumber = b.PhoneNumber,
+                    Email = b.Email
+                })
+                .FirstOrDefaultAsync();
+
+            return boeking;
+        }
+
+        public async Task<List<BeestjeViewModels>> GetBookedBeestjesByIdAsync(int id)
+        {
+            return await _context.BeestjeBoekingen
+                .Where(bb => bb.BoekingID == id)
+                .Select(bb => new BeestjeViewModels
+                {
+                    Id = bb.Beestje.Id,
+                    Name = bb.Beestje.Name,
+                    Price = bb.Beestje.Price,
+                    Picture = bb.Beestje.Picture,
+                    Type = bb.Beestje.Type.TypeName
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> DeleteBoekingAsync(int id)
+        {
+            try
+            {
+                var boeking = await _context.Boekingen.SingleOrDefaultAsync(b => b.Id == id);
+                if (boeking == null) return false;
+
+                _context.Boekingen.Remove(boeking);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task AddBoekingAsync(BoekingViewModel boekingViewModel)
         {
             var boeking = new Boeking
@@ -114,6 +177,5 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
             return errors;
         }
-
     }
 }
