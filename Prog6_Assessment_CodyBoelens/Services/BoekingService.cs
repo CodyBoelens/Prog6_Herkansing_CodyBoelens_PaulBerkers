@@ -121,41 +121,80 @@ namespace Prog6_Assessment_CodyBoelens.Services
             var klant = viewModel.Klant;
             var datum = viewModel.Datum;
 
-            // Retrieve the beestjesList along with their Types using a join
-            var beestjesList = await _context.Beestjes
-                .Where(b => beestjesId.Contains(b.Id))
-                .Join(_context.Types,
-                      b => b.TypeId,
-                      t => t.Id,
-                      (b, t) => new { Beestje = b, Type = t })
-                .ToListAsync();
+            // Haal de beestjes met hun types op
+            var beestjesRawList = await _context.Beestjes
+            .Where(b => beestjesId.Contains(b.Id))
+            .Join(_context.Types,
+                  b => b.TypeId,
+                  t => t.Id,
+                  (b, t) => new { Beestje = b, Type = t })
+            .ToListAsync(); // 🚀 Data is nu in memory
 
-            // Regel 1: Leeuw/IJsbeer niet samen met Boerderijdier
-            if (beestjesList.Any(b => b.Beestje.Name == "Leeuw" || b.Beestje.Name == "IJsbeer") && beestjesList.Any(b => b.Type.TypeName == "Boerderij"))
+            // Stap 2: Gebruik LINQ in memory
+            var beestjesList = beestjesRawList
+                .Select(b => (Beestje: b.Beestje, Type: b.Type)) // 🚀 Nu als tuple
+                .ToList();
+
+            // **Alle validatieregels toepassen**
+            var validations = new List<string?>
             {
-                errors.Add("Je kunt geen Leeuw of IJsbeer boeken samen met een Boerderijdier. 'Nom nom nom'");
-            }
+                CheckLeeuwIjsbeerWithBoerderijdier(beestjesList),
+                CheckPinguinNietInWeekend(beestjesList, datum),
+                CheckWoestijndierenNietWinter(beestjesList, datum),
+                CheckSneeuwdierenNietZomer(beestjesList, datum),
+                CheckMaxDierenPerKlant(beestjesId, klant.KlantkaartId),
+                CheckVIPAlleenPlatina(beestjesList, klant.KlantkaartId)
+            };
 
-            // Regel 2: Pinguïn niet in het weekend
-            if (beestjesList.Any(b => b.Beestje.Name == "Pinguin") && (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday))
+            // Alleen niet-lege foutmeldingen toevoegen
+            errors.AddRange(validations.Where(error => !string.IsNullOrEmpty(error)));
+
+            return errors.Any() ? errors : null;
+        }
+
+
+        public string CheckLeeuwIjsbeerWithBoerderijdier(List<(Beestje Beestje, Types Type)> beestjesList)
+        {
+            if (beestjesList.Any(b => b.Beestje.Name == "Leeuw" || b.Beestje.Name == "IJsbeer") &&
+                beestjesList.Any(b => b.Type.TypeName == "Boerderij"))
             {
-                errors.Add("Pinguïns werken alleen doordeweeks. 'Dieren in pak werken alleen doordeweeks'");
+                return "Je kunt geen Leeuw of IJsbeer boeken samen met een Boerderijdier.";
             }
+            return null;
+        }
 
-            // Regel 3: Woestijndieren niet van oktober t/m februari
+        public string CheckPinguinNietInWeekend(List<(Beestje Beestje, Types Type)> beestjesList, DateTime datum)
+        {
+            if (beestjesList.Any(b => b.Beestje.Name == "Pinguin") &&
+                (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday))
+            {
+                return "Pinguïns werken alleen doordeweeks. 'Dieren in pak werken alleen doordeweeks'";
+            }
+            return null;
+        }
+
+        public string CheckWoestijndierenNietWinter(List<(Beestje Beestje, Types Type)> beestjesList, DateTime datum)
+        {
             if (beestjesList.Any(b => b.Type.TypeName == "Woestijn") && (datum.Month >= 10 || datum.Month <= 2))
             {
-                errors.Add("Woestijndieren kunnen niet geboekt worden in oktober t/m februari. 'Brrrr – Veel te koud'");
+                return "Woestijndieren kunnen niet geboekt worden in oktober t/m februari. 'Brrrr – Veel te koud'";
             }
+            return null;
+        }
 
-            // Regel 4: Sneeuwdieren niet van juni t/m augustus
+        public string CheckSneeuwdierenNietZomer(List<(Beestje Beestje, Types Type)> beestjesList, DateTime datum)
+        {
             if (beestjesList.Any(b => b.Type.TypeName == "Sneeuw") && (datum.Month >= 6 && datum.Month <= 8))
             {
-                errors.Add("Sneeuwdieren kunnen niet geboekt worden in juni t/m augustus. 'Some People Are Worth Melting For ~ Olaf'");
+                return "Sneeuwdieren kunnen niet geboekt worden in juni t/m augustus. 'Some People Are Worth Melting For ~ Olaf'";
             }
+            return null;
+        }
 
-            // Regel 5: Maximaal aantal beestjes per klantenkaart type
-            int maxDieren = klant.KlantkaartId switch
+
+        public string CheckMaxDierenPerKlant(List<int> beestjesId, int? klantkaartId)
+        {
+            int maxDieren = klantkaartId switch
             {
                 0 => 3,
                 1 => 4,
@@ -166,16 +205,20 @@ namespace Prog6_Assessment_CodyBoelens.Services
 
             if (beestjesId.Count > maxDieren)
             {
-                errors.Add($"Je mag maximaal {maxDieren} dieren boeken met jouw klantenkaart.");
+                return $"Je mag maximaal {maxDieren} dieren boeken met jouw klantenkaart.";
             }
-
-            //Regel 6: Alleen klanten met een Platina kaart kunnen VIP Beestjes boeken
-            if (beestjesList.Any(b => b.Type.TypeName == "VIP") && (klant.KlantkaartId != 3))
-            {
-                errors.Add("Alleen klanten met een Platina kaart kunnen VIP beestjes boeken");
-            }
-
-            return errors;
+            return null;
         }
+
+        public string CheckVIPAlleenPlatina(List<(Beestje Beestje, Types Type)> beestjesList, int? klantkaartId)
+        {
+            if (beestjesList.Any(b => b.Type.TypeName == "VIP") && (klantkaartId != 3))
+            {
+                return "Alleen klanten met een Platina kaart kunnen VIP beestjes boeken";
+            }
+            return null;
+        }
+
+
     }
 }
