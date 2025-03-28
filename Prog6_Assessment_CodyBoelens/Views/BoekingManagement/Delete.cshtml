@@ -1,0 +1,36 @@
+﻿@model Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel.BoekingViewModel
+
+@{
+    ViewData["Title"] = "Delete Boeking";
+}
+
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error! </strong>@TempData["errorMessage"]
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+    </div>
+}
+<form asp-action="Delete" method="post" autocomplete="off">
+    <div class="mb-3">
+        <label asp-for="Id" class="form-label">Id</label>
+        <input asp-for="Id" class="form-control" readonly />
+        <span asp-validation-for="Id" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Naam</label>
+        <input asp-for="Name" class="form-control" readonly />
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label">Datum</label>
+        <input asp-for="Date" class="form-control" readonly />
+        <span asp-validation-for="Date" class="text-danger" />
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Delete</button>
+    </div>
+</form>
