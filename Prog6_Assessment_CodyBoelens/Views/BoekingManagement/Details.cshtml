@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Boeking Details";
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+<h4>Boeking</h4>
+<div class="mb-4">
+    <p><strong>Name:</strong> @Model.Boeking.Name</p>
+    <p><strong>Email:</strong> @Model.Boeking.Email</p>
+    <p><strong>Telefoon:</strong> @Model.Boeking.PhoneNumber</p>
+    <p><strong>Adres:</strong> @Model.Boeking.Adress</p>
+    <p><strong>Date:</strong> @Model.Boeking.Date.ToString("yyyy-MM-dd")</p>
+</div>
+
+<h4>Geselecteerde Beestjes</h4>
+<div class="row">
+    @foreach (var beestje in Model.BoekedBeestjes)
+    {
+        <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@Url.Content($"~/images/beestjes/{beestje.Picture}")" class="card-img-top" alt="@beestje.Name">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@beestje.Name</h5>
+                    <p><strong>Prijs:</strong> €@beestje.Price</p>
+                    <p><strong>Type:</strong> @beestje.Type</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

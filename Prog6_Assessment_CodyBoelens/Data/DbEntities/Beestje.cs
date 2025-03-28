@@ -20,6 +20,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbEntities
         [Required]
         [ForeignKey("Type")]
         public int TypeId { get; set; }
+        public Types Type { get; set; }
 
         public ICollection<BeestjeBoeking> BeestBoekingen { get; set; }
     }

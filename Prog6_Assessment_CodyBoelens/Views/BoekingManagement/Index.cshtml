@@ -1,0 +1,67 @@
+﻿@using Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel
+@model List<BoekingViewModel>
+
+@{
+    ViewData["Title"] = "Boeking overview";
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["errorMessage"]
+    </div>
+}
+
+@if (TempData["successMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["successMessage"]
+    </div>
+}
+
+<form>
+    <table class="table table-responsive table-hover table-bordered">
+        <thead>
+            <tr class="table-active">
+                <th>Id</th>
+                <th>Naam</th>
+                <th>Email</th>
+                <th>Datum</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var boeking in Model)
+                {
+                    <tr>
+                        <td>@boeking.Id</td>
+                        <td>@boeking.Name</td>
+                        <td>@boeking.Email</td>
+                        <td>@boeking.Date.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="BoekingManagement" asp-action="Details" asp-route-id="@boeking.Id" class="btn btn-primary">View</a>
+                                <a asp-controller="BoekingManagement" asp-action="Delete" asp-route-id="@boeking.Id" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <div>
+                            Er zijn nog geen boekingen geplaatst
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
