@@ -122,7 +122,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             // Validate the selected beestjes using the BoekingValidation method
             var errors = await _boekingService.BoekingValidation(model);
 
-            if (errors.Any())
+            if (errors != null)
             {
                 model.Beestjes = await _beestjeService.GetAvailableBeestjesAsync(model.Datum);
 
@@ -136,7 +136,6 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
 
             HttpContext.Session.SetString("SelectedBeestjes", JsonConvert.SerializeObject(model.SelectedBeestjesIds));
 
-            // Proceed with further logic after validation is successful (e.g., save data, move to next step)
             return RedirectToAction("Step04");
         }
 
