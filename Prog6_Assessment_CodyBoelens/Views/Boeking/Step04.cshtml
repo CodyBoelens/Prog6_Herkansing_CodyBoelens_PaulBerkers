@@ -36,7 +36,8 @@
 
     <h4>Prijs</h4>
     <div class="row">
-        <p>toon hier de prijs</p>
+        <p><strong>Totaalprijs (zonder korting):</strong> €@Model.TotaalPrijs.ToString("F2")</p>
+        <p><strong>Prijs na korting:</strong> €@Model.TotaalPrijsMetKorting.ToString("F2")</p>
     </div>
 
     <hr />
@@ -48,6 +49,7 @@
             <input type="hidden" name="Klant.PhoneNumber" value="@Model.Klant.PhoneNumber" />
             <input type="hidden" name="Klant.Adres" value="@Model.Klant.Adres" />
             <input type="hidden" name="Klant.KlantkaartId" value="@Model.Klant.KlantkaartId" />
+            <input type="hidden" name="TotaalPrijs" value="@Model.TotaalPrijsMetKorting" />
             <input type="hidden" name="Datum" value="@Model.Datum.ToString("yyyy-MM-dd")" />
 
             @foreach (var beestje in Model.Beestjes)

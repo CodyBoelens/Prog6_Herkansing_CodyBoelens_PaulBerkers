@@ -8,5 +8,7 @@ namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel
         public KlantViewModels Klant { get; set; }
         public List<BeestjeViewModels> Beestjes { get; set; }
         public DateTime Datum { get; set; }
+        public double TotaalPrijs { get; set; }
+        public double TotaalPrijsMetKorting { get; set; }
     }
 }

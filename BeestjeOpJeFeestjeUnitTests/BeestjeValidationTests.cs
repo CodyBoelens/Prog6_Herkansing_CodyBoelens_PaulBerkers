@@ -21,7 +21,7 @@ namespace BeestjeOpJeFeestjeUnitTests
         {
             var testBeestjes = new List<(Beestje Beestje, Types Type)>
         {
-            (new Beestje { Name = "Leeuw" }, new Types { TypeName = "Savanne" }),
+            (new Beestje { Name = "Leeuw" }, new Types { TypeName = "Jungle" }),
             (new Beestje { Name = "Koe" }, new Types { TypeName = "Boerderij" })
         };
 

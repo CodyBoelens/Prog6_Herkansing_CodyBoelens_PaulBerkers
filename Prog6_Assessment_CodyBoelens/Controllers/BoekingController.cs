@@ -17,12 +17,14 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         private readonly IBoekingService _boekingService;
         private readonly IKlantService _klantService;
         private readonly IBeestjeService _beestjeService;
+        private readonly IKortingService _kortingService;
 
-        public BoekingController(IBoekingService boekingService, IKlantService klantService, IBeestjeService beestjeService)
+        public BoekingController(IBoekingService boekingService, IKlantService klantService, IBeestjeService beestjeService, IKortingService kortingService)
         {
             _boekingService = boekingService;
             _klantService = klantService;
             _beestjeService = beestjeService;
+            _kortingService = kortingService;
         }
 
         public IActionResult Index()
@@ -152,24 +154,36 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            //calculate total price
+            // Calculate total price
+            double totaalPrijs = selectedBeestjes.Sum(b => b.Price);
+
+            // Use the injected KortingService to calculate the discount
+            double totaalKorting = _kortingService.BerekenKorting(klant, totaalPrijs, selectedBeestjes, eventDate);
+
+            double totaalMetKorting = totaalPrijs - totaalKorting;
+            HttpContext.Session.SetString("TotalPrice", totaalMetKorting.ToString());
 
             // Create the ViewModel
             var model = new Step04ViewModel
             {
                 Klant = klant,
                 Beestjes = selectedBeestjes,
-                Datum = eventDate
+                Datum = eventDate,
+                TotaalPrijs = totaalPrijs,
+                TotaalPrijsMetKorting = totaalMetKorting // Adding the total price after discount
             };
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ConfirmBooking()
         {
             DateTime eventDate = getEventDateFromSession();
             if (eventDate == default) return RedirectToAction("Index", "Home");
+
+            double totaalPrijsMetKorting = Convert.ToDouble(HttpContext.Session.GetString("TotalPrice"));
 
             List<int> selectedBeestjesIds = getSelectedBeestjesIdsFromSession();
             if (!selectedBeestjesIds.Any()) return RedirectToAction("Step03");
@@ -193,6 +207,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
                 PhoneNumber = klant.PhoneNumber,
                 Email = klant.Email, 
                 Is_Confirmed = true,
+                TotaalPrijs = totaalPrijsMetKorting,
                 KlantId = klant.Id > 0 ? klant.Id : null, 
                 BeestjeIds = selectedBeestjesIds
             };
@@ -203,6 +218,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             HttpContext.Session.Remove("selectedEventDate");
             HttpContext.Session.Remove("KlantInfo");
             HttpContext.Session.Remove("SelectedBeestjes");
+            HttpContext.Session.Remove("TotalPrice");
 
             // Redirect to a confirmation page
             TempData["orderSucces"] = "De boeking is gelukt!";
