@@ -19,6 +19,7 @@ namespace Prog6_Assessment_CodyBoelens.Data.DbEntities
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public bool Is_Confirmed { get; set; }
+        public double TotaalPrijs { get; set; }
 
         public ICollection<BeestjeBoeking> BeestBoekingen { get; set; }
         public int? KlantId { get; internal set; }

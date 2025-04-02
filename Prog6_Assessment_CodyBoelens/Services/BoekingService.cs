@@ -91,6 +91,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                 PhoneNumber = boekingViewModel.PhoneNumber,
                 Email = boekingViewModel.Email,
                 Is_Confirmed = boekingViewModel.Is_Confirmed,
+                TotaalPrijs = boekingViewModel.TotaalPrijs,
                 KlantId = boekingViewModel.KlantId 
             };
 
@@ -128,14 +129,14 @@ namespace Prog6_Assessment_CodyBoelens.Services
                   b => b.TypeId,
                   t => t.Id,
                   (b, t) => new { Beestje = b, Type = t })
-            .ToListAsync(); // 🚀 Data is nu in memory
+            .ToListAsync(); 
 
-            // Stap 2: Gebruik LINQ in memory
+            
             var beestjesList = beestjesRawList
-                .Select(b => (Beestje: b.Beestje, Type: b.Type)) // 🚀 Nu als tuple
+                .Select(b => (Beestje: b.Beestje, Type: b.Type)) 
                 .ToList();
 
-            // **Alle validatieregels toepassen**
+           
             var validations = new List<string?>
             {
                 CheckLeeuwIjsbeerWithBoerderijdier(beestjesList),
@@ -146,7 +147,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                 CheckVIPAlleenPlatina(beestjesList, klant.KlantkaartId)
             };
 
-            // Alleen niet-lege foutmeldingen toevoegen
+            
             errors.AddRange(validations.Where(error => !string.IsNullOrEmpty(error)));
 
             return errors.Any() ? errors : null;
