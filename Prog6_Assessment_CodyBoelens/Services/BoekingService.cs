@@ -42,6 +42,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                     Name = b.Name,
                     Adress = b.Adress,
                     PhoneNumber = b.PhoneNumber,
+                    TotaalPrijs = b.TotaalPrijs,
                     Email = b.Email
                 })
                 .FirstOrDefaultAsync();
