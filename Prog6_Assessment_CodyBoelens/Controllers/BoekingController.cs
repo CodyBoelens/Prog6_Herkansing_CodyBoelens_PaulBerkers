@@ -158,10 +158,10 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             double totaalPrijs = selectedBeestjes.Sum(b => b.Price);
 
             // Use the injected KortingService to calculate the discount
-            double totaalKorting = _kortingService.BerekenKorting(klant, totaalPrijs, selectedBeestjes, eventDate);
+            int discount = _kortingService.GetTotalDiscountPercentage(klant, selectedBeestjes, eventDate);
+            double totalPrice = Math.Round(totaalPrijs * (1 - (discount / 100.0)), 2);
 
-            double totaalMetKorting = totaalPrijs - totaalKorting;
-            HttpContext.Session.SetString("TotalPrice", totaalMetKorting.ToString());
+            HttpContext.Session.SetString("TotalPrice", totalPrice.ToString());
 
             // Create the ViewModel
             var model = new Step04ViewModel
@@ -170,7 +170,8 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
                 Beestjes = selectedBeestjes,
                 Datum = eventDate,
                 TotaalPrijs = totaalPrijs,
-                TotaalPrijsMetKorting = totaalMetKorting // Adding the total price after discount
+                TotaalPrijsMetKorting = totalPrice, // Adding the total price after discount
+                Discount = discount
             };
 
             return View(model);

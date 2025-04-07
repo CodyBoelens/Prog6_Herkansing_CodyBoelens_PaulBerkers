@@ -36,8 +36,9 @@
 
     <h4>Prijs</h4>
     <div class="row">
-        <p><strong>Totaalprijs (zonder korting):</strong> €@Model.TotaalPrijs.ToString("F2")</p>
-        <p><strong>Prijs na korting:</strong> €@Model.TotaalPrijsMetKorting.ToString("F2")</p>
+        <p><strong>Totaalprijs (zonder korting):</strong> €@Model.TotaalPrijs.ToString()</p>
+        <p><strong>Korting percentage:</strong> @Model.Discount.ToString()%</p>
+        <p><strong>Prijs na korting:</strong> €@Model.TotaalPrijsMetKorting.ToString()</p>
     </div>
 
     <hr />
