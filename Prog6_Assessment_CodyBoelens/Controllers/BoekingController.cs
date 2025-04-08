@@ -128,7 +128,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
 
             List<string> errors = _bookingRulesService.ValidateBookingSelection(model.Klant, beestjeViewModels, model.Datum);
 
-            if (errors != null)
+            if (errors.Count > 0)
             {
                 foreach (var error in errors)
                 {

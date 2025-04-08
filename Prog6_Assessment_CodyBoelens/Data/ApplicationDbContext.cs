@@ -11,11 +11,11 @@ namespace Prog6_Assessment_CodyBoelens.Data
         {
         }
 
-        public DbSet<Beestje> Beestjes { get; set; }
-        public DbSet<Types> Types { get; set; }
-        public DbSet<Klant> Klanten { get; set; }
-        public DbSet<Klantkaart> Klantkaarten { get; set; }
-        public DbSet<Boeking> Boekingen { get; set; }
-        public DbSet<BeestjeBoeking> BeestjeBoekingen { get; set; }
+        public virtual DbSet<Beestje> Beestjes { get; set; }
+        public virtual DbSet<Types> Types { get; set; }
+        public virtual DbSet<Klant> Klanten { get; set; }
+        public virtual DbSet<Klantkaart> Klantkaarten { get; set; }
+        public virtual DbSet<Boeking> Boekingen { get; set; }
+        public virtual DbSet<BeestjeBoeking> BeestjeBoekingen { get; set; }
     }
 }
