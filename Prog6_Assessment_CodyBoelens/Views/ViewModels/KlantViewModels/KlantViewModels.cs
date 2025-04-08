@@ -1,10 +1,12 @@
 ﻿using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel
 {
+    [ExcludeFromCodeCoverage]
 
     public class KlantViewModels
     {

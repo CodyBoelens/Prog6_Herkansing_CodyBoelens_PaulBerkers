@@ -1,8 +1,10 @@
 ﻿using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel
 {
+    [ExcludeFromCodeCoverage]
     public class BeestjeViewModels
     {
         [Required]

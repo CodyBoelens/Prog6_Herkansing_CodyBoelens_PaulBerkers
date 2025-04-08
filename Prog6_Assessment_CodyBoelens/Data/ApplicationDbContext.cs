@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Prog6_Assessment_CodyBoelens.Data
 {
+    [ExcludeFromCodeCoverage]
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
