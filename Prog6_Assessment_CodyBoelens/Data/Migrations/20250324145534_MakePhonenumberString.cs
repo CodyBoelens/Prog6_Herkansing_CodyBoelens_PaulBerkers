@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace Prog6_Assessment_CodyBoelens.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class MakePhonenumberString : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

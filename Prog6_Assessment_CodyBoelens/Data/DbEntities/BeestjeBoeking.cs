@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Prog6_Assessment_CodyBoelens.Data.DbEntities
 {
-
+    [ExcludeFromCodeCoverage]
     [Table("BeestjeBoeking")]
     public class BeestjeBoeking
     {

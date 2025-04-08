@@ -1,9 +1,11 @@
 ﻿using Prog6_Assessment_CodyBoelens.Data.DbEntities;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.BeestjeViewModel;
 using Prog6_Assessment_CodyBoelens.Views.ViewModels.KlantViewModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel
 {
+    [ExcludeFromCodeCoverage]
     public class Step03ViewModel
     {
         public KlantViewModels Klant { get; set; }

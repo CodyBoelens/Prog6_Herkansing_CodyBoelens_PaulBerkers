@@ -1,5 +1,8 @@
-﻿namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Prog6_Assessment_CodyBoelens.Views.ViewModels.BoekingsViewModel
 {
+    [ExcludeFromCodeCoverage]
     public class BoekingViewModel
     {
         public int Id { get; set; }

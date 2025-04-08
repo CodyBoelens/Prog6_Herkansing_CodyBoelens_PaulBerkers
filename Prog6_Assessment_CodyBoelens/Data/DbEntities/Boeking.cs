@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
 namespace Prog6_Assessment_CodyBoelens.Data.DbEntities
 {
+    [ExcludeFromCodeCoverage]
     [Table("Boeking")]
     public class Boeking
     {

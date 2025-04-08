@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Prog6_Assessment_CodyBoelens.Data.DbEntities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Prog6_Assessment_CodyBoelens.Data.DbSeeder
 {
+    [ExcludeFromCodeCoverage]
     public class DataSeeder
     {
         private readonly ApplicationDbContext _context;

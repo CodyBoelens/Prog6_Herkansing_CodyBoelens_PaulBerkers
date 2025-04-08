@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Prog6_Assessment_CodyBoelens.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class Boekingen : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
