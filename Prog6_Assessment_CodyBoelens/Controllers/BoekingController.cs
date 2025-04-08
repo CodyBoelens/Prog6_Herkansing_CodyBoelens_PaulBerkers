@@ -17,14 +17,17 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         private readonly IBoekingService _boekingService;
         private readonly IKlantService _klantService;
         private readonly IBeestjeService _beestjeService;
-        private readonly IKortingService _kortingService;
+        private readonly IKortingService _kortingService; 
+        private readonly IBookingRulesService _bookingRulesService;
 
-        public BoekingController(IBoekingService boekingService, IKlantService klantService, IBeestjeService beestjeService, IKortingService kortingService)
+        public BoekingController(IBoekingService boekingService, IKlantService klantService, IBeestjeService beestjeService, IKortingService kortingService, IBookingRulesService bookingRulesService)
         {
             _boekingService = boekingService;
             _klantService = klantService;
             _beestjeService = beestjeService;
             _kortingService = kortingService;
+            _bookingRulesService = bookingRulesService;
+            _bookingRulesService = bookingRulesService;
         }
 
         public IActionResult Index()
@@ -121,17 +124,18 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
         [HttpPost]
         public async Task<IActionResult> Step03(Step03ViewModel model)
         {
-            // Validate the selected beestjes using the BoekingValidation method
-            var errors = await _boekingService.BoekingValidation(model);
+            List<BeestjeViewModels> beestjeViewModels = await _beestjeService.GetBeestjesByIdsAsync(model.SelectedBeestjesIds);
+
+            List<string> errors = _bookingRulesService.ValidateBookingSelection(model.Klant, beestjeViewModels, model.Datum);
 
             if (errors != null)
             {
-                model.Beestjes = await _beestjeService.GetAvailableBeestjesAsync(model.Datum);
-
                 foreach (var error in errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
+
+                model.Beestjes = await _beestjeService.GetAvailableBeestjesAsync(model.Datum);
 
                 return View(model);
             }

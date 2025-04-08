@@ -23,6 +23,7 @@ namespace BeestjeOpJeFeestjeUnitTests
         private readonly Mock<IKlantService> _mockKlantService;
         private readonly Mock<IBeestjeService> _mockBeestjeService;
         private readonly Mock<IKortingService> _mockKortingService;
+        private readonly Mock<IBookingRulesService> _mockBookingRulesService;
         private readonly BoekingController _controller;
 
         public BoekingControllerTests()
@@ -31,12 +32,14 @@ namespace BeestjeOpJeFeestjeUnitTests
             _mockKlantService = new Mock<IKlantService>();
             _mockBeestjeService = new Mock<IBeestjeService>();
             _mockKortingService = new Mock<IKortingService>();
+            _mockBookingRulesService = new Mock<IBookingRulesService>();
 
             _controller = new BoekingController(
                 _mockBoekingService.Object,
                 _mockKlantService.Object,
                 _mockBeestjeService.Object,
-                _mockKortingService.Object
+                _mockKortingService.Object,
+                _mockBookingRulesService.Object
             );
         }
 
@@ -78,7 +81,10 @@ namespace BeestjeOpJeFeestjeUnitTests
         {
             // Arrange
             var model = new Step03ViewModel();
-            _mockBoekingService.Setup(s => s.BoekingValidation(model)).ReturnsAsync(new List<string> { "Error" });
+            List<BeestjeViewModels> beestjeViewModels = new List<BeestjeViewModels>();
+
+            _mockBeestjeService.Setup(s => s.GetBeestjesByIdsAsync(model.SelectedBeestjesIds)).ReturnsAsync(new List<BeestjeViewModels>());
+            _mockBookingRulesService.Setup(s => s.ValidateBookingSelection(model.Klant, beestjeViewModels, model.Datum)).Returns(new List<string> { "Error" });
 
             // Act
             var result = await _controller.Step03(model);
