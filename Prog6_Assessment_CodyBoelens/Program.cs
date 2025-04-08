@@ -35,6 +35,7 @@ builder.Services.AddScoped<IKlantService, KlantService>();
 builder.Services.AddScoped<IBeestjeService, BeestjeService>();
 builder.Services.AddScoped<IBoekingService, BoekingService>();
 builder.Services.AddScoped<IKortingService, KortingService>();
+builder.Services.AddScoped<IBookingRulesService, BookingRulesService>();
 
 // Add distributed memory cache (required for session)
 builder.Services.AddDistributedMemoryCache();
