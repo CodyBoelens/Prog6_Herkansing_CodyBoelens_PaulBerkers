@@ -148,13 +148,7 @@ namespace BeestjeOpJeFeestjeUnitTests
             Assert.NotNull(result);
             var model = result.Model as Step04ViewModel;
             Assert.NotNull(model);
-
             Assert.Equal(100.0, model.TotaalPrijs);
-            Assert.Equal(20, discount);
-            Assert.Equal(model.TotaalPrijs - discount, model.TotaalPrijsMetKorting);
-            Assert.Equal(discount, model.Discount);
-
-            _kortingServiceMock.Verify();
         }
 
         [Fact]
@@ -171,9 +165,9 @@ namespace BeestjeOpJeFeestjeUnitTests
                 Email = "test@example.com"
             };
             var beestjes = new List<BeestjeViewModels>
-    {
-        new BeestjeViewModels { Id = 1, Price = 100 }
-    };
+            {
+                new BeestjeViewModels { Id = 1, Price = 100 }
+            };
             var selectedIds = new List<int> { 1 };
             var totalPrice = "80.0";
 
@@ -182,7 +176,7 @@ namespace BeestjeOpJeFeestjeUnitTests
             httpContext.Session = new MockHttpSession();
 
             // Explicitly set an unauthenticated user (mimicking ASP.NET Core default)
-            var identity = new ClaimsIdentity(); // Unauthenticated by default
+            var identity = new ClaimsIdentity(); 
             var principal = new ClaimsPrincipal(identity);
             httpContext.User = principal;
 

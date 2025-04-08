@@ -51,7 +51,7 @@ namespace Prog6_Assessment_CodyBoelens.Services
                       bb => bb.BoekingID,
                       b => b.Id,
                       (bb, b) => new { bb.BeestjeID, b.Date })
-                .Where(x => x.Date.Date == date.Date) // Match the date (ignoring time)
+                .Where(x => x.Date.Date == date.Date)
                 .Select(x => x.BeestjeID)
                 .Distinct()
                 .ToListAsync();
