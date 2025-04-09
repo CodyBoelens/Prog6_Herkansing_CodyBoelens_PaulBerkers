@@ -46,7 +46,6 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
 
             HttpContext.Session.SetString("selectedEventDate", eventDate.ToString("yyyy-MM-dd"));
 
-            // Redirect to Step 2, passing eventDate as a query string
             return RedirectToAction("Step02");
         }
 
@@ -158,14 +157,12 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             KlantViewModels klant = getKlantFromSession();
             if (klant == null) return RedirectToAction("Step02");
 
-            // Calculate total price
             double totaalPrijs = selectedBeestjes.Sum(b => b.Price);
 
-            // Use the injected KortingService to calculate the discount
             int discount = _kortingService.GetTotalDiscountPercentage(klant, selectedBeestjes, eventDate);
-            double totalPrice = Math.Round(totaalPrijs * (1 - (discount / 100.0)), 2);
+            double totalPriceDiscounted = Math.Round(totaalPrijs * (1 - (discount / 100.0)), 2);
 
-            HttpContext.Session.SetString("TotalPrice", totalPrice.ToString());
+            HttpContext.Session.SetString("TotalPrice", totalPriceDiscounted.ToString());
 
             // Create the ViewModel
             var model = new Step04ViewModel
@@ -174,7 +171,7 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
                 Beestjes = selectedBeestjes,
                 Datum = eventDate,
                 TotaalPrijs = totaalPrijs,
-                TotaalPrijsMetKorting = totalPrice, // Adding the total price after discount
+                TotaalPrijsMetKorting = totalPriceDiscounted, 
                 Discount = discount
             };
 
@@ -225,7 +222,6 @@ namespace Prog6_Assessment_CodyBoelens.Controllers
             HttpContext.Session.Remove("SelectedBeestjes");
             HttpContext.Session.Remove("TotalPrice");
 
-            // Redirect to a confirmation page
             TempData["orderSucces"] = "De boeking is gelukt!";
             return RedirectToAction("Index", "Home");
         }

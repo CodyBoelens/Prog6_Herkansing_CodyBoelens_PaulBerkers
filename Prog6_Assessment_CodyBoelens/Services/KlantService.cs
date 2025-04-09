@@ -113,13 +113,11 @@ namespace Prog6_Assessment_CodyBoelens.Services
             var klant = _context.Klanten.SingleOrDefault(b => b.ApplicationUserId == applicationUserId);
             var klantkaarten = _context.Klantkaarten.ToList();
 
-            // If no klant is found, return null
             if (klant == null) return null;
 
             // Retrieve the associated user using the UserManager
             var user = _userManager.FindByIdAsync(applicationUserId).Result;
 
-            // Return the populated KlantViewModel
             return new KlantViewModels
             {
                 Id = klant.Id,
@@ -154,36 +152,30 @@ namespace Prog6_Assessment_CodyBoelens.Services
             string LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
             string Numbers = "0123456789";
             string SpecialCharacters = "!@#$%^&*()-_=+[]{}|;:'\",.<>/?";
-            // Make sure the length is at least 6
+
             length = Math.Max(length, 6);
 
-            // Create a character pool based on the requirements
             string charPool = UppercaseLetters + LowercaseLetters + Numbers + SpecialCharacters;
 
-            // Use RNGCryptoServiceProvider for secure random generation
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
             {
-                // Ensure at least one uppercase letter, one number, and one special character
                 StringBuilder password = new StringBuilder();
                 password.Append(GetRandomCharacter(rng, UppercaseLetters));
                 password.Append(GetRandomCharacter(rng, Numbers));
                 password.Append(GetRandomCharacter(rng, SpecialCharacters));
                 password.Append(GetRandomCharacter(rng, LowercaseLetters));
 
-                // Fill the rest of the password with random characters
                 for (int i = 3; i < length; i++)
                 {
                     password.Append(charPool[GetRandomIndex(rng, charPool.Length)]);
                 }
 
-                // Convert the StringBuilder to a string
                 return password.ToString();
             }
         }
 
         private static char GetRandomCharacter(RNGCryptoServiceProvider rng, string charPool)
         {
-            // Get a random character from the specified character pool
             int index = GetRandomIndex(rng, charPool.Length);
             return charPool[index];
         }

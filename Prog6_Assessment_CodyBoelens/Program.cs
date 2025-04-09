@@ -17,7 +17,7 @@ builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -49,10 +49,20 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
-    var scope = app.Services.CreateScope();
+
+// Voeg migraties toe en seed data
+using (var scope = app.Services.CreateScope())
+{
+    // Haal de ApplicationDbContext op
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    // Voer migraties uit
+    context.Database.Migrate();
+
+    // Seed data
     var dataSeeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     dataSeeder.SeedData();
-
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
